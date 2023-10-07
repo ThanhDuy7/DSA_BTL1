@@ -2,7 +2,7 @@
 #include "Restaurant.cpp"
 #include <fstream>
 
-
+int MAXSIZE = 0;
 
 void simulate(string filename, imp_res* r)
 {
