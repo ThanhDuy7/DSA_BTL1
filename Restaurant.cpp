@@ -22,6 +22,7 @@ class imp_res : public Restaurant
 				current = NULL;
 			} 
 		};
+
 		void RED(string name, int energy)
 		{
 			cout << name << " " << energy << endl;
@@ -38,7 +39,7 @@ class imp_res : public Restaurant
 			
 			if (energy == 0 || countQueue == MAXSIZE) return;
 
-			customer *cus = new customer (name, energy, nullptr, nullptr);
+			customer *cus = new customer (name, energy, cus, cus);
 			if (this->count < MAXSIZE/2) 
 			{
 				this->count++;
@@ -46,6 +47,21 @@ class imp_res : public Restaurant
 					this->current = cus;
 					return;
 				}
+				if (cus->energy >=current->energy)
+				{
+					cus->next = current->next;
+					current->next->prev = cus;
+					current->next = cus;
+					cus->prev = current;
+					current = cus;
+				} else {
+					cus->next = current;
+					cus->prev = current->prev;
+					current->prev->next = cus;
+					current->prev = cus;
+					current = cus;
+				}
+				
 
 			}
 			
