@@ -11,6 +11,7 @@ class imp_res : public Restaurant
 	public:	
 		imp_res() : count(0), countQueue(0), current(NULL), queue(NULL), order(NULL) {};
 		~imp_res() {
+			/*
 			if (this->current != NULL) {
 				customer *temp = this->current->next;
 				while (temp != this->current) {
@@ -43,6 +44,7 @@ class imp_res : public Restaurant
 				countQueue = 0;
 				this->queue = NULL;
 			} 
+			*/
 		};
 		void addCusRight(customer* cus) {
 			cus->next = this->current->next;
@@ -89,9 +91,9 @@ class imp_res : public Restaurant
 		}
 
 		void deleteCus(int num) {
-			
-			customer* temp1 = this->current;
-			customer* temp2 = this->order->next;
+			this->order = this->order->next;
+			customer* temp2 = NULL;
+			customer* temp1 = NULL;
 			if (num == count) {
 				for (int i = 0; i < count; i++) {
 					temp1 = this->current;
@@ -105,24 +107,29 @@ class imp_res : public Restaurant
 				return;	
 			}
 			string name;
+			
 			for (int i = 0; i < num; i++) {
 				temp1 = this->current;
+				temp2 = this->order;
 				name = temp2->name;
+				
 				while(temp1->name != name) {
 					temp1 = temp1->next;
 				}
 				temp1->prev->next = temp1->next;
 				temp1->next->prev = temp1->prev;
-
+				
 				temp2->prev->next = temp2->next;
 				temp2->next->prev = temp2->prev;
 
 				if (temp1->energy > 0 ) this->current = temp1->next;
 				else this->current = temp1->prev;
-				temp2 = temp2->next;
+				this->order = temp2->next;
+				delete temp2;
 				delete temp1;
 				this->count--;
 			}
+			this->order = this->order->prev;
 		}
 		void RED(string name, int energy)
 		{
