@@ -22,7 +22,33 @@ class imp_res : public Restaurant
 				current = NULL;
 			} 
 		};
-
+		void addCusRight(customer* cus) {
+			if (this->count == 0) {
+				this->current = cus;
+				this->count++;
+				return;
+			}
+			cus->next = this->current->next;
+			cus->prev = this->current;
+			this->current->next->prev = cus;
+			this->current->next = cus;
+			this->current = cus;
+			this->count++;
+		}
+		
+		void addCusLeft(customer* cus) {
+			if (this->count == 0) {
+				this->current = cus;
+				this->count++;
+				return;
+			}
+			cus->next = this->current;
+			cus->prev = this->current->prev;
+			this->current->prev->next = cus;
+			this->current->prev = cus;
+			this->current = cus;
+			this->count++;
+		}
 		void RED(string name, int energy)
 		{
 			cout << name << " " << energy << endl;
@@ -42,26 +68,30 @@ class imp_res : public Restaurant
 			customer *cus = new customer (name, energy, cus, cus);
 			if (this->count < MAXSIZE/2) 
 			{
-				this->count++;
-				if (this->count == 1) {
-					this->current = cus;
-					return;
-				}
 				if (cus->energy >=current->energy)
 				{
-					cus->next = current->next;
-					current->next->prev = cus;
-					current->next = cus;
-					cus->prev = current;
-					current = cus;
+					addCusRight(cus);
 				} else {
-					cus->next = current;
-					cus->prev = current->prev;
-					current->prev->next = cus;
-					current->prev = cus;
-					current = cus;
+					addCusLeft(cus);
 				}
-				
+			} else {
+				int RES = abs(energy - current->energy);
+				string largest = current->name;
+				customer* temp = this->current->next;
+				while (temp != this->current) {
+					if (abs(energy - temp->energy)  > RES) {
+						RES = abs(energy - temp->energy);
+						largest = temp->name;
+					}
+					temp = temp->next;
+				}
+				temp = this->current;
+				while (largest != temp->name) {
+					temp = temp->next;
+				}
+				if (energy - temp->energy < 0) {
+					addCusLeft(cus);
+				} else addCusRight(cus);
 
 			}
 			
