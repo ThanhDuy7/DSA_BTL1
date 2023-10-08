@@ -47,7 +47,7 @@ class imp_res : public Restaurant
 		void addCusRight(customer* cus) {
 			cus->next = this->current->next;
 			cus->prev = this->current;
-			this->current->next->prev = cus;
+			current->next->prev = cus;
 			this->current->next = cus;
 			this->current = cus;
 			this->count++;
@@ -84,7 +84,7 @@ class imp_res : public Restaurant
 
 			//base case
 			if (energy == 0 || countQueue == MAXSIZE) return;
-
+			
 			if (count != 0) 
 			{
 				customer *temp = this->current;
@@ -104,7 +104,9 @@ class imp_res : public Restaurant
 			
 			
 
-			customer *cus = new customer (name, energy, cus, cus);
+			customer *cus = new customer (name, energy, NULL, NULL);
+			cus->next = cus;
+			cus->prev = cus;
 			if (this->count == 0) {
 				this->current = cus;
 				this->count++;
@@ -140,7 +142,9 @@ class imp_res : public Restaurant
 				}
 				if (energy - temp->energy < 0) {
 					addCusLeft(cus);
-				} else addCusRight(cus);
+				} else {
+					addCusRight(cus);
+				}
 
 			}
 			
