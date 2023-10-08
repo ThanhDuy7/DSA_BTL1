@@ -88,8 +88,41 @@ class imp_res : public Restaurant
 			this->countQueue++;
 		}
 
-		void deleteCus(string name) {
+		void deleteCus(int num) {
+			
+			customer* temp1 = this->current;
+			customer* temp2 = this->order->next;
+			if (num == count) {
+				for (int i = 0; i < count; i++) {
+					temp1 = this->current;
+					this->current = this->current->next;
+					temp2 = this->order;
+					this->order = this->order->next;
+					delete temp1;
+					delete temp2;
+				}
+				count = 0;
+				return;	
+			}
+			string name;
+			for (int i = 0; i < num; i++) {
+				temp1 = this->current;
+				name = temp2->name;
+				while(temp1->name != name) {
+					temp1 = temp1->next;
+				}
+				temp1->prev->next = temp1->next;
+				temp1->next->prev = temp1->prev;
 
+				temp2->prev->next = temp2->next;
+				temp2->next->prev = temp2->prev;
+
+				if (temp1->energy > 0 ) this->current = temp1->next;
+				else this->current = temp1->prev;
+				temp2 = temp2->next;
+				delete temp1;
+				this->count--;
+			}
 		}
 		void RED(string name, int energy)
 		{
@@ -168,13 +201,15 @@ class imp_res : public Restaurant
 			
 			
 			
-			
-
-	
+		
 		}
 		void BLUE(int num) {
 			cout << "blue " << num << endl;
-
+			if (this->count == 0) return;
+			if (num >= count) {
+				num = count;
+			} 
+			deleteCus(num);
 		}
 		void PURPLE()
 		{
