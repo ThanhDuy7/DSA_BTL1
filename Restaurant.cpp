@@ -11,10 +11,11 @@ class imp_res : public Restaurant
 	public:	
 		imp_res() : count(0), countQueue(0), current(NULL), queue(NULL), order(NULL) {};
 		~imp_res() {
-			/*
+			
 			if (this->current != NULL) {
 				customer *temp = this->current->next;
 				while (temp != this->current) {
+					delete this->current;
 					customer *temp2 = temp;
 					temp = temp->next;
 					delete temp2;
@@ -44,7 +45,7 @@ class imp_res : public Restaurant
 				countQueue = 0;
 				this->queue = NULL;
 			} 
-			*/
+			
 		};
 		void addCusRight(customer* cus) {
 			cus->next = this->current->next;
@@ -92,13 +93,11 @@ class imp_res : public Restaurant
 
 		void deleteCus(int num) {
 			this->order = this->order->next;
-			customer* temp2 = NULL;
-			customer* temp1 = NULL;
 			if (num == count) {
-				for (int i = 0; i < count; i++) {
-					temp1 = this->current;
+				for (int i = 0; i < count+1; i++) {
+					customer* temp1 = this->current;
 					this->current = this->current->next;
-					temp2 = this->order;
+					customer* temp2 = this->order;
 					this->order = this->order->next;
 					delete temp1;
 					delete temp2;
@@ -109,8 +108,8 @@ class imp_res : public Restaurant
 			string name;
 			
 			for (int i = 0; i < num; i++) {
-				temp1 = this->current;
-				temp2 = this->order;
+				customer* temp1 = this->current;
+				customer* temp2 = this->order;
 				name = temp2->name;
 				
 				while(temp1->name != name) {
