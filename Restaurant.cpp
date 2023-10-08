@@ -62,6 +62,19 @@ class imp_res : public Restaurant
 			this->count++;
 		}
 
+		void addOrder(customer* cus) {
+			customer* temp = new customer(cus->name, cus->energy, NULL, NULL);
+			temp->next = temp;
+			temp->prev = temp;
+			if (this->count == 0) {
+				this->order = temp;
+				return;
+			}
+			temp->next = this->order->next;
+			temp->prev = this->order;
+			this->order->next = temp;
+			this->order = temp;
+		}
 		void addQueue(customer* cus) {
 			if (this->countQueue == 0) {
 				this->queue = cus;
@@ -109,6 +122,7 @@ class imp_res : public Restaurant
 			cus->prev = cus;
 			if (this->count == 0) {
 				this->current = cus;
+				addOrder(cus);
 				this->count++;
 				return;
 			}
@@ -122,8 +136,10 @@ class imp_res : public Restaurant
 				if (cus->energy >=current->energy)
 				{
 					addCusRight(cus);
+					addOrder(cus);
 				} else {
 					addCusLeft(cus);
+					addOrder(cus);
 				}
 			} else {
 				int RES = abs(energy - current->energy);
@@ -142,8 +158,10 @@ class imp_res : public Restaurant
 				}
 				if (energy - temp->energy < 0) {
 					addCusLeft(cus);
+					addOrder(cus);
 				} else {
 					addCusRight(cus);
+					addOrder(cus);
 				}
 
 			}
