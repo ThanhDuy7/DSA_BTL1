@@ -82,6 +82,11 @@ class imp_res : public Restaurant
 
 		void deleteCus(int num) {
 			this->order = this->order->next;
+<<<<<<< HEAD
+=======
+			customer* temp1 = NULL;
+			customer* temp2 = NULL;
+>>>>>>> 107a523 (update destructor)
 			if (num == count) {
 				for (int i = 0; i < count; i++) {
 					customer* temp1 = this->current;
