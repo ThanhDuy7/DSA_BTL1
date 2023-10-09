@@ -204,7 +204,7 @@ class imp_res : public Restaurant
 			if (num >= count) {
 				num = count;
 			} 
-			//deleteCus(num);
+			deleteCus(num);
 		}
 		void PURPLE()
 		{
