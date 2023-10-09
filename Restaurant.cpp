@@ -13,37 +13,26 @@ class imp_res : public Restaurant
 		~imp_res() {
 			
 			if (this->current != NULL) {
-				customer *temp = this->current->next;
-				while (temp != this->current) {
-					delete this->current;
-					customer *temp2 = temp;
-					temp = temp->next;
-					delete temp2;
+				customer *temp = current;
+				while (current != NULL) {
+					temp = current;
+					current = current->next;
+					delete temp;
+					temp = order;
+					order = order->next;
+					delete temp;
 				}
-				delete this->current;
 				count = 0;
-				current = NULL;
 			}
-			if (this->order != NULL) {
-				customer *temp = this->order->next;
-				while (temp != this->order) {
-					customer *temp2 = temp;
-					temp = temp->next;
-					delete temp2;
-				}
-				delete this->order;
-				this->order = NULL;
-			}
+			
 			if (this->queue != NULL) {
-				customer *temp = this->queue->next;
-				while (temp != this->queue) {
-					customer *temp2 = temp;
-					temp = temp->next;
-					delete temp2;
+				customer *temp = this->queue;
+				while (queue != NULL) {
+					temp = queue;
+					queue = queue ->next;
+					delete temp;
 				}
-				delete this->queue;
 				countQueue = 0;
-				this->queue = NULL;
 			} 
 			
 		};
@@ -215,7 +204,7 @@ class imp_res : public Restaurant
 			if (num >= count) {
 				num = count;
 			} 
-			deleteCus(num);
+			//deleteCus(num);
 		}
 		void PURPLE()
 		{
