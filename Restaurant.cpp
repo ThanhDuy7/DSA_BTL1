@@ -14,23 +14,34 @@ class imp_res : public Restaurant
 			
 			if (this->current != NULL) {
 				customer *temp = current;
-				while (current != NULL) {
-					temp = current;
-					current = current->next;
-					delete temp;
-					temp = order;
-					order = order->next;
-					delete temp;
+				customer *temp2 = order;
+				for (int i = 0; i <count; i++) {
+					temp = current->next;
+					temp2 = order->next;
+					if (temp == current) {
+						delete current;
+						delete order;
+						break;
+					}
+					delete current;
+					delete order;
+					current = temp;
+					order = temp2;
 				}
+				
 				count = 0;
 			}
 			
 			if (this->queue != NULL) {
 				customer *temp = this->queue;
-				while (queue != NULL) {
-					temp = queue;
-					queue = queue ->next;
-					delete temp;
+				for (int i = 0; i < countQueue; i++) {
+					temp = this->queue->next;
+					if (temp == this->queue) {
+						delete this->queue;
+						break;
+					}
+					delete this->queue;
+					this->queue = temp;
 				}
 				countQueue = 0;
 			} 
@@ -62,10 +73,10 @@ class imp_res : public Restaurant
 				this->order = temp;
 				return;
 			}
-			temp->next = this->order->next;
-			temp->prev = this->order;
-			this->order->next = temp;
-			this->order = temp;
+			order->prev->next = temp;
+			temp->prev = order->prev;
+			temp->next = order;
+			order->prev = temp;
 		}
 		void addQueue(customer* cus) {
 			if (this->countQueue == 0) {
@@ -73,17 +84,14 @@ class imp_res : public Restaurant
 				this->countQueue++;
 				return;
 			}
-			cus->next = this->queue->next;
-			cus->prev = this->queue;
-			this->queue->next = cus;
-			this->queue = cus;
+			queue->prev->next = cus;
+			cus->prev = queue->prev;
+			cus->next = queue;
+			queue->prev = cus;
 			this->countQueue++;
 		}
 
 		void deleteCus(int num) {
-			this->order = this->order->next;
-			customer* temp1 = NULL;
-			customer* temp2 = NULL;
 			if (num == count) {
 				for (int i = 0; i < count; i++) {
 					customer* temp1 = this->current;
@@ -119,7 +127,6 @@ class imp_res : public Restaurant
 				delete temp1;
 				this->count--;
 			}
-			this->order = this->order->prev;
 		}
 		
 		void deleteQueue() {
@@ -171,7 +178,6 @@ class imp_res : public Restaurant
 			}
 			if (this->count < MAXSIZE/2) 
 			{
-				
 				if (cus->energy >=current->energy)
 				{
 					addCusRight(cus);
@@ -191,11 +197,10 @@ class imp_res : public Restaurant
 					}
 					temp = temp->next;
 				}
-				temp = this->current;
 				while (largest != temp->name) {
 					temp = temp->next;
 				}
-				if (energy - temp->energy < 0) {
+				if ((energy - temp->energy) < 0) {
 					addCusLeft(cus);
 					addOrder(cus);
 				} else {
@@ -214,17 +219,27 @@ class imp_res : public Restaurant
 			if (this->count == 0) return;
 			if (num >= count) {
 				num = count;
-			} 
+			}
+			for (int i = 0; i < count;i++) {
+				cout<<current->name<<"1"<<endl;
+				current = current->next;
+			}
+			
 			deleteCus(num);
 			for (int i = 0; i < count; i++) {
-				cout<<current->name<<"4"<<endl;
+				cout<<current->name<<"3"<<endl;
+				current = current->next;
 			}
 			if (countQueue > 0) {
-				while (count <= MAXSIZE && countQueue > 0) {
-					RED(queue->name, queue->energy);
+				while (count < MAXSIZE && countQueue > 0) {
+					string s = queue->name;
+					int e = queue->energy;
 					deleteQueue();
+					RED(s, e);
 				}
 			}
+			
+			
 		}
 		void PURPLE()
 		{
