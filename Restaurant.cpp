@@ -254,9 +254,26 @@ class imp_res : public Restaurant
 				}
 				temp = temp->next;
 			}
-			cout<<maxEnergy->name<<index<<" "<<maxEnergy->energy<<endl;
-			for (int i = 1; i < index; i+= index/2) {
-				temp = temp->next;
+			
+			for (int gap = index/2; gap >0; gap = gap / 2) {
+				customer* i = queue;
+				customer* j = queue;
+				int run = gap;
+
+				while (run > 0) {
+					j = j->next;
+					run--;
+				}
+				for (;j != queue;i = i->next, j = j->next) {
+					if (abs(i->energy) < abs(j->energy)) {
+						string tempName = i->name;
+						int tempEnergy = i->energy;
+						i->name = j->name;
+						i->energy = j->energy;
+						j->name = tempName;
+						j->energy = tempEnergy;
+					}
+				}
 			}
 
 		}
