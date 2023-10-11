@@ -244,6 +244,21 @@ class imp_res : public Restaurant
 		void PURPLE()
 		{
 			cout << "purple"<< endl;
+			customer* temp = this->queue;
+			customer* maxEnergy = temp;
+			int index = 1;
+			for (int i = 1; i < countQueue+1; i++) {
+				if (abs(temp->energy) >= abs(maxEnergy->energy)) {
+					maxEnergy = temp;
+					index = i;
+				}
+				temp = temp->next;
+			}
+			cout<<maxEnergy->name<<index<<" "<<maxEnergy->energy<<endl;
+			for (int i = 1; i < index; i+= index/2) {
+				temp = temp->next;
+			}
+
 		}
 		void REVERSAL()
 		{
