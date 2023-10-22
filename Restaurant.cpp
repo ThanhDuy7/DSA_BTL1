@@ -137,9 +137,41 @@ class imp_res : public Restaurant
 			delete temp;
 			countQueue--;
 		}
+		
+		void deleteDomain(int flag, string name) {
+				customer* temp = this->current;
+				while (temp->name != name) {
+					temp = temp->next;
+				}
+				temp->prev->next = temp->next;
+				temp->next->prev = temp->prev;
+				if (temp->next != temp)	{
+					if (flag == 1) current = temp->next;
+					else current = temp->prev;
+					delete temp;
+					count--;
+				} else {
+					delete temp;
+					count--;
+					return;
+				}
+		
+				
+		}
+		
+		void addFromQueue () {
+			if (countQueue > 0) {
+				while (count < MAXSIZE && countQueue > 0) {
+					string s = queue->name;
+					int e = queue->energy;
+					deleteQueue();
+					RED(s, e);
+				}
+			}
+		}
 		void RED(string name, int energy)
 		{
-			cout << name << " " << energy << endl;
+			//cout << name << " " << energy << endl;
 
 			//base case
 			if (energy == 0 || countQueue == MAXSIZE) return;
@@ -230,14 +262,8 @@ class imp_res : public Restaurant
 				cout<<current->name<<"3"<<endl;
 				current = current->next;
 			}
-			if (countQueue > 0) {
-				while (count < MAXSIZE && countQueue > 0) {
-					string s = queue->name;
-					int e = queue->energy;
-					deleteQueue();
-					RED(s, e);
-				}
-			}
+			
+			addFromQueue();
 			
 			
 		}
@@ -288,9 +314,166 @@ class imp_res : public Restaurant
 		void DOMAIN_EXPANSION()
 		{
 			cout << "domain_expansion" << endl;
+			int positiveGuest = 0;
+			int negativeGuest = 0;
+			customer* temp1 = this->current;
+			customer* temp2 = this->queue;
+			for (int i = 0; i < count; i++) {
+				if (temp1->energy > 0) positiveGuest+= temp1->energy;
+				else negativeGuest+= temp1->energy;
+				temp1 = temp1->next;
+			}
+			for (int i = 0; i <countQueue; i++) {
+				if (temp2->energy > 0) positiveGuest+= temp2->energy;
+				else negativeGuest+= temp2->energy;
+				temp2 = temp2->next;
+			}
+			if (positiveGuest < abs(negativeGuest)) {
+				temp1 = order;
+				temp2 = order;
+				int a = count;
+				if (countQueue != 0) {
+					queue = queue->prev;
+					for (int i = 0; i < countQueue-1; i++) {
+					if (queue->energy > 0) {
+						cout<<queue->name<<"-"<<queue->energy<<endl;
+					}
+					queue = queue->prev;
+				}
+				}
+				order = order->prev;
+				for (int i = 0; i <count; i++) {
+					if (order->energy > 0) {
+						cout<<order->name<<"-"<<order->energy<<endl;
+					}
+					order = order->prev;
+				}
+				for (int i = 0; i < a; i++) {
+					if (temp1->energy > 0) {
+						temp1->prev->next = temp1->next;
+						temp1->next->prev = temp1->prev;
+						
+						if (temp1 == order) {
+							order = temp1->next;
+							temp2 = order;
+						} else {
+							temp2 = temp2->next;
+						}
+						deleteDomain(1, temp1->name);
+						delete temp1;
+						temp1 = temp2;
+					} else {
+						temp1 = temp1->next;
+					}
+				}
+				a = countQueue;
+				temp1 = queue;
+				temp2 = queue;
+				for (int i = 0; i <a; i++) {
+					if (temp1->energy > 0) {
+						temp1->prev->next = temp1->next;
+						temp1->next->prev = temp1->prev;
+						
+						if (temp1 == queue) {
+							queue = temp1->next;
+							temp2 = queue;
+						} else {
+							temp2 = temp2->next;
+						}
+
+						delete temp1;
+						temp1 = temp2;
+						countQueue--;
+					} else {
+						temp1 = temp1->next;
+					}
+				}
+
+				
+			} else {
+				temp1 = order;
+				temp2 = order;
+				int a = count;
+				if (countQueue != 0) {
+					queue = queue->prev;
+					for (int i = 0; i < countQueue-1; i++) {
+					if (queue->energy < 0) {
+						cout<<queue->name<<"-"<<queue->energy<<endl;
+					}
+					queue = queue->prev;
+				}
+				}
+				order = order->prev;
+				for (int i = 0; i <count; i++) {
+					if (order->energy < 0) {
+						cout<<order->name<<"-"<<order->energy<<endl;
+					}
+					order = order->prev;
+				}
+				for (int i = 0; i < a; i++) {
+					if (temp1->energy < 0) {
+						temp1->prev->next = temp1->next;
+						temp1->next->prev = temp1->prev;
+						
+						if (temp1 == order) {
+							order = temp1->next;
+							temp2 = order;
+						} else {
+							temp2 = temp2->next;
+						}
+						deleteDomain(0, temp1->name);
+						delete temp1;
+						temp1 = temp2;
+					} else {
+						temp1 = temp1->next;
+					}
+				}
+				a = countQueue;
+				temp1 = queue;
+				temp2 = queue;
+				for (int i = 0; i <a; i++) {
+					if (temp1->energy < 0) {
+						temp1->prev->next = temp1->next;
+						temp1->next->prev = temp1->prev;
+						
+						if (temp1 == queue) {
+							queue = temp1->next;
+							temp2 = queue;
+						} else {
+							temp2 = temp2->next;
+						}
+
+						delete temp1;
+						temp1 = temp2;
+						countQueue--;
+					} else {
+						temp1 = temp1->next;
+					}
+				}
+			}
+			addFromQueue();
 		}
 		void LIGHT(int num)
 		{
 			cout << "light " << num << endl;
+			if (num == 0) {
+				customer* temp = queue;
+				for (int i = 0; i < count; i++) {
+					cout << temp->name << "-" << temp->energy << endl;
+					temp = temp->next;
+				}
+			} else if (num > 0) {
+				customer* temp = current;
+				for (int i = 0; i < count; i++) {
+					cout << temp->name << "-" << temp->energy << endl;
+					temp = temp->next;
+				}
+			} else {
+				customer* temp = current;
+				for (int i = 0; i < count; i++) {
+					cout << temp->name << "-" << temp->energy << endl;
+					temp = temp->prev;
+				}
+			}
 		}
 };
