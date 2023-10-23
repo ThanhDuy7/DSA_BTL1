@@ -284,16 +284,7 @@ class imp_res : public Restaurant
 			if (num >= count) {
 				num = count;
 			}
-			for (int i = 0; i < countOrder;i++) {
-				cout<<order->name<<"1"<<endl;
-				order = order->next;
-			}
-			
 			deleteCus(num);
-			for (int i = 0; i < countOrder; i++) {
-				cout<<order->name<<"3"<<endl;
-				order = order->next;
-			}
 			
 			addFromQueue();
 			
@@ -369,11 +360,25 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				queue->print();
 				queue = queue->next;
 			}
-			BLUE(swap);
+			BLUE(swap%MAXSIZE);
 		}
 		void REVERSAL()
 		{
 			cout << "reversal" << endl;
+			customer* temp1 = current;
+			customer* temp2 = current->next;
+
+			while (temp1 != temp2 || temp1->next != temp2) {
+				int swp = 0;
+				if (temp1->energy < 0) {
+					if (temp2->energy < 0) {
+						temp1 = temp1->prev;
+						swap(temp1, temp2,swp);
+					}
+					temp2 = temp2->next;
+				} else temp1 = temp1->prev;
+			}
+
 		}
 		void UNLIMITED_VOID()
 		{
