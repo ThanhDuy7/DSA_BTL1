@@ -299,23 +299,44 @@ class imp_res : public Restaurant
 			
 			
 		}
-void insort(customer* temp,int n, int incre) {
+
+	void swap(customer *&temp2, customer* &temp1,int &swp) {
+		swp++;
+		cout<<temp2->name<<"4"<<temp1->name<<endl;
+		string name = temp1->name;
+		int energy = temp1->energy;
+		temp1->name = temp2->name;
+		temp1->energy = temp2->energy;
+		temp2->name = name;
+		temp2->energy = energy;
+	}
+void insort(customer *temp,int n, int incre, int & swp) {
 	customer* temp2 = temp;
+	customer* temp1 = temp;
 	for (int i = incre; i < n; i+=incre) {
 		for (int j = i; j>=incre; j-=incre) {
+			temp2 = temp;
 			for (int a = 0; a < j; a++) {
 				temp2 = temp2->next;
 			}
-			for (int a = 0; a < j ;a++) {
-				
+			temp1 = temp2;
+			for (int a = 0; a < incre ;a++) {
+				temp1 = temp1->prev;
 			}
-			if (abs(temp->energy) < abs(temp2->energy)) {
-				string name = temp->name;
-				int energy = temp->energy;
-				temp->name = temp2->name;
-				temp->energy = temp2->energy;
-				temp2->name = name;
-				temp2->energy = energy;
+			if (abs(temp2->energy) > abs(temp1->energy)) {
+				swap(temp2, temp1,swp);
+			} else if (abs(temp2->energy) == abs(temp1->energy)) {
+				customer* run = order;
+				for (int i = 0; i < countOrder; i++) {
+					if (run->name == temp2->name) {
+						swap(temp2, temp1,swp);
+						break;
+					} else if (run->name == temp1->name) {
+						break;
+					} else {
+						run = run->next;
+					}
+				}
 			}
 		}
 	}
@@ -325,6 +346,7 @@ void insort(customer* temp,int n, int incre) {
 			cout << "purple"<< endl;
 			customer* temp = this->queue;
 			customer* maxEnergy = temp;
+			int swap = 0;
 			int index = 1;
 			for (int i = 1; i < countQueue+1; i++) {
 				if (abs(temp->energy) >= abs(maxEnergy->energy)) {
@@ -334,16 +356,20 @@ void insort(customer* temp,int n, int incre) {
 				temp = temp->next;
 			}
 			
-			for (int gap = index/2; gap >2; gap /= 2) {
+			for (int gap = index/2; gap >= 2; gap /= 2) {
 
 				customer* jump = queue;
-				
 				for (int j = 0; j < gap; j++, jump = jump->next) {
-					insort(jump,index - j, gap);
+					insort(jump,index - j, gap,swap);
 				}
 				
 			}
-
+			insort(queue, index, 1,swap);
+			for (int i = 0; i < countQueue; i++) {
+				queue->print();
+				queue = queue->next;
+			}
+			BLUE(swap);
 		}
 		void REVERSAL()
 		{
