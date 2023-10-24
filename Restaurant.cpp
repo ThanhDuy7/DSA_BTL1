@@ -73,6 +73,15 @@ class imp_res : public Restaurant
 		}
 
 		void addOrder(customer* cus) {
+			if (countOrder != 0) {
+				customer* temp = order;
+				for (int i = 0; i < countOrder; i++) {
+					if (temp->name == cus->name) {
+						return;
+					}
+					temp = temp->next;
+				}
+			}
 			customer* temp = new customer(cus->name, cus->energy, NULL, NULL);
 			temp->next = temp;
 			temp->prev = temp;
@@ -109,14 +118,11 @@ class imp_res : public Restaurant
 			}
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-			if (temp->next != temp)	{
-				delete temp;
-				countOrder--;
-			} else {
-				delete temp;
-				countOrder--;
-				return;
-			}
+			
+			delete temp;
+			countOrder--;
+			return;
+			
 		}
 		void deleteCus(int num) {
 			if (num == count) {
@@ -135,10 +141,10 @@ class imp_res : public Restaurant
 				customer* temp1 = current;
 				customer* temp2 = order;
 				
-				for (int i = 0; i < countQueue; i++) {
+				for (int j = 0; j < countOrder; j++) {
 					name = temp2->name;
 					int flag = 0;
-					for (int j = 0; i < count; i ++) {
+					for (int g = 0; g < count; g++) {
 						if (temp1->name == name) {
 							flag = 1;
 							break;
@@ -202,6 +208,7 @@ class imp_res : public Restaurant
 				while (count < MAXSIZE && countQueue > 0) {
 					string s = queue->name;
 					int e = queue->energy;
+					
 					deleteQueue();
 					RED(s, e);
 				}
@@ -280,20 +287,21 @@ class imp_res : public Restaurant
 		}
 		void BLUE(int num) {
 			cout << "blue " << num << endl;
+			if (num == 0) return;
 			if (this->count == 0) return;
 			if (num >= count) {
 				num = count;
 			}
+			
 			deleteCus(num);
 			
 			addFromQueue();
-			
 			
 		}
 
 	void swap(customer *&temp2, customer* &temp1,int &swp) {
 		swp++;
-		cout<<temp2->name<<"4"<<temp1->name<<endl;
+		//cout<<temp2->name<<"4"<<temp1->name<<endl;
 		string name = temp1->name;
 		int energy = temp1->energy;
 		temp1->name = temp2->name;
@@ -335,7 +343,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		void PURPLE()
 		{
 			cout << "purple"<< endl;
-			customer* temp = this->queue;
+			customer* temp = queue;
 			customer* maxEnergy = temp;
 			int swap = 0;
 			int index = 1;
@@ -347,7 +355,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				temp = temp->next;
 			}
 			
-			for (int gap = index/2; gap >= 2; gap /= 2) {
+			for (int gap = index/2; gap > 2; gap /= 2) {
 
 				customer* jump = queue;
 				for (int j = 0; j < gap; j++, jump = jump->next) {
@@ -361,19 +369,27 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				queue = queue->next;
 			}
 			BLUE(swap%MAXSIZE);
+			
 		}
 		void REVERSAL()
 		{
 			cout << "reversal" << endl;
+			string s = current->name;
 			customer* temp1 = current;
 			customer* temp2 = current->next;
 
-			while (temp1 != temp2 || temp1->next != temp2) {
+			while (current) {
 				int swp = 0;
 				if (temp1->energy < 0) {
 					if (temp2->energy < 0) {
-						temp1 = temp1->prev;
 						swap(temp1, temp2,swp);
+						temp1 = temp1->prev;
+						if (temp2->next == temp1 || temp1 == temp2) {
+							break;
+						}
+					}
+					if (temp1 == temp2) {
+						break;
 					}
 					temp2 = temp2->next;
 				} else temp1 = temp1->prev;
@@ -388,15 +404,17 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		{
 			cout << "domain_expansion" << endl;
 			int positiveGuest = 0;
-			int negativeGuest = 0;
+			int allGuest = 0;
 			customer* temp1 = order;
 			customer* temp2 = queue;
 			for (int i = 0; i < countOrder; i++) {
-				if (temp1->energy > 0) positiveGuest+= temp1->energy;
-				else negativeGuest+= temp1->energy;
+				if (temp1->energy > 0) {
+					positiveGuest+= temp1->energy;
+				}
+				allGuest+= temp1->energy;
 				temp1 = temp1->next;
 			}
-			if (positiveGuest < abs(negativeGuest)) {
+			if (positiveGuest < abs(allGuest)) {
 				temp1 = order;
 				temp2 = order;
 				int a = count;
@@ -408,21 +426,27 @@ void insort(customer *temp,int n, int incre, int & swp) {
 					order = order->prev;
 				}
 				order = temp1;
-				for (int i = 0; i < a; i++) {
+				for (int i = 0; i < countOrder; i++) {
 					if (temp1->energy > 0) {
+						customer* temp3 = current;
+						for (int j = 0; j < count; j++) {
+							if (temp3->name == temp1->name) {
+								deleteDomain(1, temp1->name);
+								break;
+							}
+							temp3 = temp3->next;
+						}
 						temp1->prev->next = temp1->next;
 						temp1->next->prev = temp1->prev;
-						
 						if (temp1 == order) {
-							order = temp1->next;
-							temp2 = order;
-						} else {
-							temp2 = temp2->next;
+							order = order->next;
+							
 						}
-						deleteDomain(1, temp1->name);
+						temp2 = temp2->next;
 						delete temp1;
 						temp1 = temp2;
 						countOrder--;
+
 					} else {
 						temp1 = temp1->next;
 					}
@@ -458,23 +482,31 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				order = order->prev;
 				for (int i = 0; i < countOrder; i++) {
 					if (order->energy < 0) {
+						cout<<"gagsdga";
 						order->print();
+						
 					}
 					order = order->prev;
 				}
 				order = order->next;
 				
-				for (int i = 0; i < a; i++) {
+				for (int i = 0; i < countOrder; i++) {
 					if (temp1->energy < 0) {
+						customer* temp3 = current;
+						for (int j = 0; j < count; j++) {
+							if (temp3->name == temp1->name) {
+								deleteDomain(-1, temp1->name);
+								break;
+							}
+							temp3 = temp3->next;
+						}
 						temp1->prev->next = temp1->next;
 						temp1->next->prev = temp1->prev;
 						if (temp1 == order) {
 							order = order->next;
-							temp2 = order->next;
-						} else {
-							temp2 = temp2->next;
+							
 						}
-						deleteDomain(-1, temp1->name);
+						temp2 = temp2->next;
 						delete temp1;
 						temp1 = temp2;
 						countOrder--;
@@ -508,7 +540,9 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				}
 				
 			}
+			
 			addFromQueue();
+			
 		}
 		void LIGHT(int num)
 		{
