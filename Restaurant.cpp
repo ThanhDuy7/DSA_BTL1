@@ -382,6 +382,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				int swp = 0;
 				if (temp1->energy < 0) {
 					if (temp2->energy < 0) {
+						if (temp1 == temp2) break;
 						swap(temp1, temp2,swp);
 						temp1 = temp1->prev;
 						if (temp2->next == temp1 || temp1 == temp2) {
@@ -394,6 +395,28 @@ void insort(customer *temp,int n, int incre, int & swp) {
 					temp2 = temp2->next;
 				} else temp1 = temp1->prev;
 			}
+			temp1 = current;
+			temp2 = current->next;
+			while (current) {
+				int swp = 0;
+				if (temp1->energy > 0) {
+					if (temp2->energy > 0) {
+						if (temp1 == temp2) break;
+						swap(temp1, temp2,swp);
+						temp1 = temp1->prev;
+						if (temp2->next == temp1 || temp1 == temp2) {
+							break;
+						}
+					}
+					if (temp1 == temp2) {
+						break;
+					}
+					temp2 = temp2->next;
+				} else temp1 = temp1->prev;
+			}
+			while (current->name != s) {
+				current = current->next;
+			}
 
 		}
 		void UNLIMITED_VOID()
@@ -404,17 +427,16 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		{
 			cout << "domain_expansion" << endl;
 			int positiveGuest = 0;
-			int allGuest = 0;
+			int negativeGuest = 0;
 			customer* temp1 = order;
 			customer* temp2 = queue;
 			for (int i = 0; i < countOrder; i++) {
 				if (temp1->energy > 0) {
 					positiveGuest+= temp1->energy;
-				}
-				allGuest+= temp1->energy;
+				} else negativeGuest+= temp1->energy;
 				temp1 = temp1->next;
 			}
-			if (positiveGuest < abs(allGuest)) {
+			if (positiveGuest < abs(negativeGuest)) {
 				temp1 = order;
 				temp2 = order;
 				int a = count;
@@ -482,9 +504,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				order = order->prev;
 				for (int i = 0; i < countOrder; i++) {
 					if (order->energy < 0) {
-						cout<<"gagsdga";
 						order->print();
-						
 					}
 					order = order->prev;
 				}
