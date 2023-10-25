@@ -282,6 +282,7 @@ class imp_res : public Restaurant
 			}
 		}
 		void BLUE(int num) {
+			//cout<<"blue"<<" "<<num<<endl;
 			if (num == 0) return;
 			if (this->count == 0) return;
 			if (num >= count) {
@@ -528,7 +529,8 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				for (int i = 0; i < a; i++) {
 					if (temp1->energy > 0) {
 						customer* temp3 = current;
-						for (int j = 0; j < count; j++) {
+						int x =count;
+						for (int j = 0; j < x; j++) {
 							if (temp3->name == temp1->name) {
 								deleteDomain(1, temp1->name);
 								break;
@@ -539,7 +541,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 						temp1->next->prev = temp1->prev;
 						if (temp1 == order) {
 							order = order->next;
-							
 						}
 						temp2 = temp1->next;
 						delete temp1;
@@ -587,10 +588,11 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				}
 				order = order->next;
 				
-				for (int i = 0; i < countOrder; i++) {
+				for (int i = 0; i < a; i++) {
 					if (temp1->energy < 0) {
 						customer* temp3 = current;
-						for (int j = 0; j < count; j++) {
+						int x = count;
+						for (int j = 0; j < x; j++) {
 							if (temp3->name == temp1->name) {
 								deleteDomain(-1, temp1->name);
 								break;
@@ -601,9 +603,8 @@ void insort(customer *temp,int n, int incre, int & swp) {
 						temp1->next->prev = temp1->prev;
 						if (temp1 == order) {
 							order = order->next;
-							
 						}
-						temp2 = temp2->next;
+						temp2 = temp1->next;
 						delete temp1;
 						temp1 = temp2;
 						countOrder--;
@@ -643,6 +644,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
+			//cout<<"light"<<" "<<num<<endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
