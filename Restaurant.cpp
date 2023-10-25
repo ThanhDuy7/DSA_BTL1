@@ -189,14 +189,11 @@ class imp_res : public Restaurant
 					if (temp->next != temp)	{
 						if (flag == 1) current = temp->next;
 						else current = temp->prev;
-						delete temp;
-						count--;
-						return;
-					} else {
-						delete temp;
-						count--;
-						return;
 					}
+						delete temp;
+						count--;
+						return;
+					
 				}
 				temp = temp->next;
 			}	
@@ -217,6 +214,7 @@ class imp_res : public Restaurant
 		void RED(string name, int energy)
 		{
 			//base case
+			//cout<<"red"<<" "<<name<<" "<<energy<<endl;
 			if (energy == 0 || countQueue == MAXSIZE) return;
 			
 			if (count != 0) 
@@ -264,7 +262,6 @@ class imp_res : public Restaurant
 				string largest = current->name;
 				customer* temp = current->next;
 				while (temp != current) {
-					
 					if (abs(energy - temp->energy)  > RES) {
 						RES = abs(energy - temp->energy);
 						largest = temp->name;
@@ -296,6 +293,7 @@ class imp_res : public Restaurant
 
 	void swap(customer *&temp2, customer* &temp1,int &swp) {
 		swp++;
+		//cout<<"swap"<<temp2->name<<" "<<temp1->name<<" "<<swp<<endl;
 		string name = temp1->name;
 		int energy = temp1->energy;
 		temp1->name = temp2->name;
@@ -336,6 +334,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 }
 		void PURPLE()
 		{
+			//cout<<"purple"<<endl;
 			if (countQueue <= 1 ) return;
 			customer* temp = queue;
 			customer* maxEnergy = temp;
@@ -358,15 +357,12 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				
 			}
 			insort(queue, index, 1,swap);
-			for (int i = 0; i < countQueue; i++) {
-				queue->print();
-				queue = queue->next;
-			}
 			BLUE(swap%MAXSIZE);
 			
 		}
 		void REVERSAL()
 		{
+			//cout<<"reversal"<<endl;
 			if (count <= 1) {
 				return;
 			}
@@ -418,8 +414,8 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void UNLIMITED_VOID()
 		{
+			//cout<<"unlimited void"<<endl;
 			if (count < 4) return;
-
 			customer* temp = current;
 			if (count == 4) {
 				int minEnergy = current->energy;
@@ -482,18 +478,17 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				}
 				current = current->next;
 			}
-			
 			customer* temp1 = maxList;
 			customer* smallest = maxList;
 			int minIndex = 0;
 			int minEnergy = maxList->energy;
 			for (int i = 0; i < maxLength; i++) {
-				if (temp->energy < minEnergy) {
-					minEnergy = temp->energy;
-					smallest = temp;
+				if (temp1->energy < minEnergy) {
+					minEnergy = temp1->energy;
+					smallest = temp1;
 					minIndex = i;
 				}
-				temp = temp->next;
+				temp1 = temp1->next;
 			}
 			for (int i = minIndex; i < maxLength;i++) {
 				smallest->print();
@@ -506,6 +501,8 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void DOMAIN_EXPANSION()
 		{
+			//cout<<"domain expansion"<<endl;
+			if (count == 0) return;
 			int positiveGuest = 0;
 			int negativeGuest = 0;
 			customer* temp1 = order;
@@ -519,7 +516,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 			if (positiveGuest < abs(negativeGuest)) {
 				temp1 = order;
 				temp2 = order;
-				int a = count;
+				int a = countOrder;
 				order = order->prev;
 				for (int i = 0; i <countOrder; i++) {
 					if (order->energy > 0) {
@@ -527,8 +524,8 @@ void insort(customer *temp,int n, int incre, int & swp) {
 					}
 					order = order->prev;
 				}
-				order = temp1;
-				for (int i = 0; i < countOrder; i++) {
+				order = order->next;
+				for (int i = 0; i < a; i++) {
 					if (temp1->energy > 0) {
 						customer* temp3 = current;
 						for (int j = 0; j < count; j++) {
@@ -544,7 +541,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 							order = order->next;
 							
 						}
-						temp2 = temp2->next;
+						temp2 = temp1->next;
 						delete temp1;
 						temp1 = temp2;
 						countOrder--;
@@ -580,9 +577,9 @@ void insort(customer *temp,int n, int incre, int & swp) {
 			} else {
 				temp1 = order;
 				temp2 = order;
-				int a = count;
+				int a = countOrder;
 				order = order->prev;
-				for (int i = 0; i < countOrder; i++) {
+				for (int i = 0; i < a; i++) {
 					if (order->energy < 0) {
 						order->print();
 					}
@@ -646,7 +643,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
-			cout<<"light"<<" "<<num<<endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
