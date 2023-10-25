@@ -216,7 +216,6 @@ class imp_res : public Restaurant
 		}
 		void RED(string name, int energy)
 		{
-
 			//base case
 			if (energy == 0 || countQueue == MAXSIZE) return;
 			
@@ -263,16 +262,17 @@ class imp_res : public Restaurant
 			} else {
 				int RES = abs(energy - current->energy);
 				string largest = current->name;
-				customer* temp = this->current->next;
-				while (temp != this->current) {
+				customer* temp = current->next;
+				while (temp != current) {
+					
 					if (abs(energy - temp->energy)  > RES) {
 						RES = abs(energy - temp->energy);
 						largest = temp->name;
 					}
 					temp = temp->next;
 				}
-				while (largest != temp->name) {
-					temp = temp->next;
+				while (largest != current->name) {
+					current = current->next;
 				}
 				if ((energy - temp->energy) < 0) {
 					addCusLeft(cus);
@@ -281,7 +281,7 @@ class imp_res : public Restaurant
 					addCusRight(cus);
 					addOrder(cus);
 				}
-
+				
 			}
 		}
 		void BLUE(int num) {
