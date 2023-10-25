@@ -443,7 +443,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				temp = temp->next;
 			}
 			
-			for (int i = 0; i < count; i ++) {
+			for (int i = 0; i < count; i++) {
 				int sum = 0;
 				int length = 0;
 				temp = current;
