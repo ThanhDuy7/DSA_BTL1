@@ -216,7 +216,6 @@ class imp_res : public Restaurant
 		}
 		void RED(string name, int energy)
 		{
-			//cout << name << " " << energy << endl;
 
 			//base case
 			if (energy == 0 || countQueue == MAXSIZE) return;
@@ -286,7 +285,6 @@ class imp_res : public Restaurant
 			}
 		}
 		void BLUE(int num) {
-			//cout << "blue " << num << endl;
 			if (num == 0) return;
 			if (this->count == 0) return;
 			if (num >= count) {
@@ -298,7 +296,6 @@ class imp_res : public Restaurant
 
 	void swap(customer *&temp2, customer* &temp1,int &swp) {
 		swp++;
-		//cout<<temp2->name<<"4"<<temp1->name<<endl;
 		string name = temp1->name;
 		int energy = temp1->energy;
 		temp1->name = temp2->name;
@@ -339,7 +336,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 }
 		void PURPLE()
 		{
-			//cout << "purple"<< endl;
+			if (countQueue <= 1 ) return;
 			customer* temp = queue;
 			customer* maxEnergy = temp;
 			int swap = 0;
@@ -370,12 +367,14 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void REVERSAL()
 		{
-			//cout << "reversal" << endl;
+			if (count <= 1) {
+				return;
+			}
+			
 			string s = current->name;
 			customer* temp1 = current;
 			customer* temp2 = current->next;
-
-			while (current) {
+			while (true) {
 				int swp = 0;
 				if (temp1->energy < 0) {
 					if (temp2->energy < 0) {
@@ -391,10 +390,11 @@ void insort(customer *temp,int n, int incre, int & swp) {
 					}
 					temp2 = temp2->next;
 				} else temp1 = temp1->prev;
+				if (temp1 == temp2) break;
 			}
 			temp1 = current;
 			temp2 = current->next;
-			while (current) {
+			while (true) {
 				int swp = 0;
 				if (temp1->energy > 0) {
 					if (temp2->energy > 0) {
@@ -410,16 +410,15 @@ void insort(customer *temp,int n, int incre, int & swp) {
 					}
 					temp2 = temp2->next;
 				} else temp1 = temp1->prev;
+				if (temp1 == temp2) break;
 			}
 			while (current->name != s) {
 				current = current->next;
 			}
-
 		}
 		void UNLIMITED_VOID()
 		{
-			//cout << "unlimited_void" << endl;
-			if (count == 0) return;
+			if (count < 4) return;
 
 			customer* temp = current;
 			if (count == 4) {
@@ -507,7 +506,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void DOMAIN_EXPANSION()
 		{
-			//cout << "domain_expansion" << endl;
 			int positiveGuest = 0;
 			int negativeGuest = 0;
 			customer* temp1 = order;
@@ -648,7 +646,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
-			//cout << "light " << num << endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
