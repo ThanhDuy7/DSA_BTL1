@@ -292,11 +292,8 @@ class imp_res : public Restaurant
 			if (num >= count) {
 				num = count;
 			}
-			
 			deleteCus(num);
-			
 			addFromQueue();
-			
 		}
 
 	void swap(customer *&temp2, customer* &temp1,int &swp) {
@@ -422,6 +419,91 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		void UNLIMITED_VOID()
 		{
 			cout << "unlimited_void" << endl;
+			if (count == 0) return;
+
+			customer* temp = current;
+			if (count == 4) {
+				int minEnergy = current->energy;
+				for (int i = 0; i < count; i++) {
+					if (current->energy < minEnergy) {
+						minEnergy = current->energy;
+						temp = current;
+					}
+					current = current->next;
+				}
+				for (int i = 0; i <count; i++) {
+					temp->print();
+					temp = temp->next;
+				}
+				return;
+			}
+
+
+			int minSum = 0;
+			int maxLength = 4;
+			customer* maxList = current;
+			for (int i = 0; i < maxLength; i++) {
+				minSum += temp->energy;
+				temp = temp->next;
+			}
+			
+			for (int i = 0; i < count; i ++) {
+				int sum = 0;
+				int length = 0;
+				temp = current;
+				for (int j =0; j < 4; j++) {
+					sum += temp->energy;
+					length++;
+					temp = temp->next;
+				}
+				if (sum == minSum) {
+					if (length >= maxLength) {
+						maxLength = length;
+						maxList = current;
+					}
+				} else if (sum < minSum) {
+					minSum = sum;
+					maxLength = length;
+					maxList = current;
+				}
+				for (int j = 0; j < count - 4; j++) {
+					sum += temp->energy;
+					length++;
+					if (sum == minSum) {
+						if (length >= maxLength) {
+							maxLength = length;
+							maxList = current;
+						}
+					} else if (sum < minSum) {
+						minSum = sum;
+						maxLength = length;
+						maxList = current;
+					}
+					temp = temp->next;
+				}
+				current = current->next;
+			}
+			
+			customer* temp1 = maxList;
+			customer* smallest = maxList;
+			int minIndex = 0;
+			int minEnergy = maxList->energy;
+			for (int i = 0; i < maxLength; i++) {
+				if (temp->energy < minEnergy) {
+					minEnergy = temp->energy;
+					smallest = temp;
+					minIndex = i;
+				}
+				temp = temp->next;
+			}
+			for (int i = minIndex; i < maxLength;i++) {
+				smallest->print();
+				smallest = smallest->next;
+			}
+			for (int i = 0; i < minIndex; i++) {
+				maxList->print();
+				maxList = maxList->next;
+			}
 		}
 		void DOMAIN_EXPANSION()
 		{
