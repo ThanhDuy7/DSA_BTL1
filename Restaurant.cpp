@@ -274,7 +274,7 @@ class imp_res : public Restaurant
 				while (largest != current->name) {
 					current = current->next;
 				}
-				if ((energy - temp->energy) < 0) {
+				if ((energy - current->energy) < 0) {
 					addCusLeft(cus);
 					addOrder(cus);
 				} else {
@@ -646,6 +646,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
+			cout<<"light"<<" "<<num<<endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
