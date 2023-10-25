@@ -216,7 +216,7 @@ class imp_res : public Restaurant
 		}
 		void RED(string name, int energy)
 		{
-			cout << name << " " << energy << endl;
+			//cout << name << " " << energy << endl;
 
 			//base case
 			if (energy == 0 || countQueue == MAXSIZE) return;
@@ -286,7 +286,7 @@ class imp_res : public Restaurant
 			}
 		}
 		void BLUE(int num) {
-			cout << "blue " << num << endl;
+			//cout << "blue " << num << endl;
 			if (num == 0) return;
 			if (this->count == 0) return;
 			if (num >= count) {
@@ -339,7 +339,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 }
 		void PURPLE()
 		{
-			cout << "purple"<< endl;
+			//cout << "purple"<< endl;
 			customer* temp = queue;
 			customer* maxEnergy = temp;
 			int swap = 0;
@@ -370,7 +370,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void REVERSAL()
 		{
-			cout << "reversal" << endl;
+			//cout << "reversal" << endl;
 			string s = current->name;
 			customer* temp1 = current;
 			customer* temp2 = current->next;
@@ -418,7 +418,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void UNLIMITED_VOID()
 		{
-			cout << "unlimited_void" << endl;
+			//cout << "unlimited_void" << endl;
 			if (count == 0) return;
 
 			customer* temp = current;
@@ -507,7 +507,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void DOMAIN_EXPANSION()
 		{
-			cout << "domain_expansion" << endl;
+			//cout << "domain_expansion" << endl;
 			int positiveGuest = 0;
 			int negativeGuest = 0;
 			customer* temp1 = order;
@@ -648,7 +648,7 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
-			cout << "light " << num << endl;
+			//cout << "light " << num << endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
