@@ -544,8 +544,9 @@ void insort(customer *temp,int n, int incre, int & swp) {
 						}
 						temp2 = temp1->next;
 						delete temp1;
-						temp1 = temp2;
 						countOrder--;
+						if (countOrder == 0) break;
+						temp1 = temp2;
 
 					} else {
 						temp1 = temp1->next;
@@ -559,16 +560,12 @@ void insort(customer *temp,int n, int incre, int & swp) {
 						temp1->prev->next = temp1->next;
 						temp1->next->prev = temp1->prev;
 						
-						if (temp1 == queue) {
-							queue = temp1->next;
-							temp2 = queue;
-						} else {
-							temp2 = temp2->next;
-						}
-
+						temp2 = temp1->next;
+						if (temp1 == queue) queue = temp2;
 						delete temp1;
-						temp1 = temp2;
 						countQueue--;
+						if (countOrder == 0) break;
+						temp1 = temp2;
 					} else {
 						temp1 = temp1->next;
 					}
@@ -606,8 +603,9 @@ void insort(customer *temp,int n, int incre, int & swp) {
 						}
 						temp2 = temp1->next;
 						delete temp1;
-						temp1 = temp2;
 						countOrder--;
+						if (temp2 == temp1) break;
+						temp1 = temp2;
 
 					} else {
 						temp1 = temp1->next;
@@ -615,23 +613,22 @@ void insort(customer *temp,int n, int incre, int & swp) {
 				}
 				
 				a = countQueue;
-				temp1 = queue;
-				temp2 = queue;
+				customer* temp1 = queue;
+				customer* temp2 = queue;
 				for (int i = 0; i <a; i++) {
 					if (temp1->energy < 0) {
 						temp1->prev->next = temp1->next;
 						temp1->next->prev = temp1->prev;
 						
+						temp2 = temp1->next;
 						if (temp1 == queue) {
 							queue = temp1->next;
-							temp2 = queue;
-						} else {
-							temp2 = temp2->next;
-						}
+						} 
 
 						delete temp1;
-						temp1 = temp2;
 						countQueue--;
+						if (countQueue == 0) break;
+						temp1 = temp2;
 					} else {
 						temp1 = temp1->next;
 					}
