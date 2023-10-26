@@ -214,7 +214,6 @@ class imp_res : public Restaurant
 		void RED(string name, int energy)
 		{
 			//base case
-			//cout<<"red"<<" "<<name<<" "<<energy<<endl;
 			if (energy == 0 || countQueue == MAXSIZE) return;
 			
 			if (count != 0) 
@@ -282,7 +281,6 @@ class imp_res : public Restaurant
 			}
 		}
 		void BLUE(int num) {
-			//cout<<"blue"<<" "<<num<<endl;
 			if (num == 0) return;
 			if (this->count == 0) return;
 			if (num >= count) {
@@ -294,7 +292,6 @@ class imp_res : public Restaurant
 
 	void swap(customer *&temp2, customer* &temp1,int &swp) {
 		swp++;
-		//cout<<"swap"<<temp2->name<<" "<<temp1->name<<" "<<swp<<endl;
 		string name = temp1->name;
 		int energy = temp1->energy;
 		temp1->name = temp2->name;
@@ -335,7 +332,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 }
 		void PURPLE()
 		{
-			//cout<<"purple"<<endl;
 			if (countQueue <= 1 ) return;
 			customer* temp = queue;
 			customer* maxEnergy = temp;
@@ -363,7 +359,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void REVERSAL()
 		{
-			//cout<<"reversal"<<endl;
 			if (count <= 1) {
 				return;
 			}
@@ -415,7 +410,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void UNLIMITED_VOID()
 		{
-			//cout<<"unlimited void"<<endl;
 			if (count < 4) return;
 			customer* temp = current;
 			if (count == 4) {
@@ -514,7 +508,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void DOMAIN_EXPANSION()
 		{
-			//cout<<"domain expansion"<<endl;
 			if (count == 0) return;
 			int positiveGuest = 0;
 			int negativeGuest = 0;
@@ -653,7 +646,6 @@ void insort(customer *temp,int n, int incre, int & swp) {
 		}
 		void LIGHT(int num)
 		{
-			//cout<<"light"<<" "<<num<<endl;
 			if (num == 0) {
 				for (int i = 0; i < countQueue; i++) {
 					queue->print();
