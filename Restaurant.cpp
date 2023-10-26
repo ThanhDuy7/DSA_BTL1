@@ -419,17 +419,29 @@ void insort(customer *temp,int n, int incre, int & swp) {
 			if (count < 4) return;
 			customer* temp = current;
 			if (count == 4) {
-				int minEnergy = current->energy;
-				for (int i = 0; i < count; i++) {
-					if (current->energy < minEnergy) {
-						minEnergy = current->energy;
-						temp = current;
-					}
-					current = current->next;
+				customer* maxList = current;
+				for (int i = 0; i < count-1; i++) {
+					maxList = maxList->next;
 				}
-				for (int i = 0; i <count; i++) {
-					temp->print();
-					temp = temp->next;
+				customer* temp1 = maxList;
+				customer* smallest = maxList;
+				int minIndex = 0;
+				int minEnergy = maxList->energy;
+				for (int i = 0; i < 4; i++) {
+					if (temp1->energy < minEnergy) {
+						minEnergy = temp1->energy;
+						smallest = temp1;
+						minIndex = i;
+					}
+					temp1 = temp1->next;
+				}
+				for (int i = minIndex; i < 4;i++) {
+					smallest->print();
+					smallest = smallest->next;
+				}
+				for (int i = 0; i < minIndex; i++) {
+					maxList->print();
+					maxList = maxList->next;
 				}
 				return;
 			}
